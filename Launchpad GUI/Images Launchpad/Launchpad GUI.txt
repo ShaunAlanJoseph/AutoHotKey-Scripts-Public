@@ -1,0 +1,120 @@
+#SingleInstance, Force
+SetBatchLines, -1
+SetTitleMatchMode, 2
+SetWorkingDir %A_ScriptDir%
+
+if WinActive("ahk_class #32770"){
+	toggle := 1
+}
+
+xcoord := (A_ScreenWidth - 192) / 2
+ycoord := (A_ScreenHeight - 66) / 2
+
+Gui:
+Gui, Launchpad:New
+Gui, Launchpad:-Caption -DPIScale
+Gui, Launchpad:Color, 0c0c0c
+if toggle{
+	Gui, Launchpad:Add, Picture, gtoggle_button x%xcoord% y%ycoord%, Images\clipboard_button.png
+}
+else{
+	Gui, Launchpad:Add, Picture, gtoggle_button x%xcoord% y%ycoord%, Images\open_file_button.png
+}
+;----ADD GUI HERE----
+;>g>button1gui>>;
+Gui, Add, Picture, xx1 yy1 gbutton1, path1
+;<g<button1gui<<;
+;>g>button2gui>>;
+Gui, Add, Picture, xx2 yy2 gbutton2, path2
+;<g<button2gui<<;
+;>g>button3gui>>;
+Gui, Add, Picture, xx3 yy3 gbutton3, path3
+;<g<button3gui<<;
+;>g>button4gui>>;
+Gui, Add, Picture, x4 yy4 gbutton4, path4
+;<g<button4gui<<;
+;>g>button5gui>>;
+Gui, Add, Picture, xx5 yy5 gbutton5, path5
+;<g<button5gui<<;
+;>g>watermelongui>>;
+Gui, Add, Picture, x136 y752 gwatermelon, D:\Shauns School Work\Programs\AutoHotKey\Public\Launchpad GUI\Images Launchpad\Images\watermelon.png
+;<g<watermelongui<<;
+---STOP ADDING GUI HERE----
+Gui, Launchpad:Show , x0 y0 w%A_ScreenWidth% h%A_ScreenHeight%, Launchpad GUI
+WinSet, TransColor, 0c0c0c, A
+return
+
+toggle_button:
+if toggle{
+	toggle := 0
+	Gui, Launchpad:Destroy
+	goto, Gui
+}
+else{
+	toggle := 1
+	Gui, Launchpad:Destroy
+	goto, Gui
+}
+return
+
+#If WinActive("Launchpad GUI")
+Esc::
+ExitApp
+#If
+	
+LaunchpadGuiClose:
+ExitApp
+
+;----ADD FUNCTIONS HERE----
+;>f>button1func>>;
+button1:
+Gui, Launchpad:Destroy
+launchpad("launchpath1", True)
+ExitApp
+;<f<button1func<<;
+;>f>button2func>>;
+button2:
+Gui, Launchpad:Destroy
+launchpad("launchpath2", True)
+ExitApp
+;<f<button2func<<;
+;>f>button3func>>;
+button3:
+Gui, Launchpad:Destroy
+launchpad("launchpath3", False)
+ExitApp
+;<f<button3func<<;
+;>f>button4func>>;
+button4:
+Gui, Launchpad:Destroy
+launchpad("launchpath4", True)
+ExitApp
+;<f<button4func<<;
+;>f>button5func>>;
+button5:
+Gui, Launchpad:Destroy
+launchpad("launchpath5", True)
+ExitApp
+;<f<button5func<<;
+;>f>watermelonfunc>>;
+watermelon:
+Gui, Launchpad:Destroy
+launchpad("this will work", True)
+ExitApp
+;<f<watermelonfunc<<;
+---STOP ADDING FUNCTIONS HERE----
+
+launchpad(path, shouldtoggle := 1){
+	if shouldtoggle{
+		global toggle
+		if toggle{
+			Clipboard := path
+		}
+		else{
+			Run, %path%
+		}
+	}
+	else{
+		Run, %path%
+	}
+}
